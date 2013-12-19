@@ -13,9 +13,9 @@ public class UserMenu implements Menu{
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		
 		System.out.println("1.Search");
-		System.out.println("2.Add friend");
-		System.out.println("3.Share sth on wall");
-		System.out.println("4.Sign out");
+//		System.out.println("2.Add friend");
+		System.out.println("2.Share sth. on your wall");
+		System.out.println("3.Sign out");
 		
 
 		int input;

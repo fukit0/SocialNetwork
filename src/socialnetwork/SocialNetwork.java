@@ -158,14 +158,14 @@ public class SocialNetwork {
 		
 		//önce arkadaşlar arasında aranıyor
 		for (User u : activeUser.getFriends()) {
-			if (u.getName().contains(name)) {
+			if (u.isVisible() && u.getName().contains(name)) {
 				searchResult.add(u);
 			}
 		}
 		
 		//daha sonra tüm sosyal ağ aranıyor
 		for (User u : users) {
-			if (u.getName().contains(name)) {
+			if (!activeUser.isFriend(u.getUserId()) && u.isVisible() && u.getName().contains(name)) {
 				searchResult.add(u);
 			}
 		}
@@ -179,6 +179,39 @@ public class SocialNetwork {
 			i++;
 		}
 		
+		System.out.println("Please choose a person you want to interact:");
+		int choice=0;
+		try {
+			 choice = Integer.parseInt(bufferRead.readLine());
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		
+		if(activeUser.isFriend(searchResult.get(choice-1).getUserId()))
+		{
+		    System.out.print(searchResult.get(choice-1).toString());
+		    
+		}
+		else
+		{
+			System.out.println(searchResult.get(choice-1).getName()
+					+ " is not your friend.Do you want to add as a friend him/her?(yes/no) :");
+			try {
+				if(bufferRead.readLine().equals("yes"))
+				{
+					activeUser.addFriend(searchResult.get(choice-1));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 		
 		
 		

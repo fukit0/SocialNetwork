@@ -37,6 +37,11 @@ public class User {
 		wall = new Wall();				
 	}
 	
+	public void addFriend(User u)
+	{
+		friends.add(u);
+	}
+	
 	public boolean isFriend(int id) {
 		for (User u : friends) {
 			if (u.getUserId() == id)
