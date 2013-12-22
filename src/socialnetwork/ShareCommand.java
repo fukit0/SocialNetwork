@@ -17,6 +17,7 @@ public class ShareCommand implements Command {
 	public void run() {
 		// TODO Auto-generated method stub
 		wall.share(object);
+		
 	}
 
 }

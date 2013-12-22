@@ -94,6 +94,12 @@ public class User {
 	public void setInterests(ArrayList<String> interests) {
 		this.interests = interests;
 	}
+	public void addInterest(String i){
+		interests.add(i);
+	}
+	public void deleteInterest(int index){
+		interests.remove(index);
+	}
 	public boolean isVisible() {
 		return visible;
 	}

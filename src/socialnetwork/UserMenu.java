@@ -15,7 +15,10 @@ public class UserMenu implements Menu{
 		System.out.println("1.Search");
 //		System.out.println("2.Add friend");
 		System.out.println("2.Share sth. on your wall");
-		System.out.println("3.Sign out");
+		System.out.println("3.My Interests");
+		System.out.println("4.My Groups");
+		System.out.println("5.My Profile");
+		System.out.println("6.Sign out");
 		
 
 		int input;

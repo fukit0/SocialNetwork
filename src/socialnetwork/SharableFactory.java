@@ -8,8 +8,9 @@ public class SharableFactory {
 			return new SharableText(data);
 		else if(type.equals("link"))
 			return new SharableLink(data);
-		else
+		else if(type.equals("media"))
 			return new SharableMedia(data);
 		
+		return new SharableObject("null");
 	}
 }

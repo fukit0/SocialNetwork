@@ -27,31 +27,42 @@ public class Main {
 		
 		System.out.print(u1.toString());
 		
-	
-		int choice= new MainMenu().show();
-		
-		int id=0;
-		switch(choice){
-			case 1:
-				    id=sc.signUp();
-					break;
-			case 2:					
-					id=sc.signIn(); 
-					break;
-		}
-		
-		if(id!=-1)
-		{
-			int choice2;
-			do
+		int choice;
+		do{
+		 choice	= new MainMenu().show();
+			
+			int id=0;
+			switch(choice){
+				case 1:
+					    id=sc.signUp();
+						break;
+				case 2:					
+						id=sc.signIn(); 
+						break;
+			}
+			
+			if(id!=-1)
 			{
-				choice2 = new UserMenu().show();
-				if(choice2==1)
-					sc.searchFriend();
+				int choice2;
+				do
+				{
+					choice2 = new UserMenu().show();
+					if(choice2==1)
+						sc.searchFriend();
+					if(choice2==2)
+						sc.share();
+					if(choice2==3)
+						sc.interests();
+					if(choice2==3)
+						
+					if(choice2==5)
+						sc.viewProfile();
 					
+					
+				}while(choice2!=6);
 				
-			}while(choice2!=3);
-		}
+			}
+		}while(choice!=3);
 		
 	}
 
