@@ -12,6 +12,7 @@ public class User {
 	
 	private ArrayList<User> friends;
 	private ArrayList<Dependent> dependents;
+	//private ArrayList<User> dependents;
 	private ArrayList<String> interests;
 	private boolean visible;
 	private Wall wall;
@@ -19,6 +20,7 @@ public class User {
 	public User(){
 		friends = new ArrayList<User>();
 		dependents = new ArrayList<Dependent>();
+		//dependents = new ArrayList<User>();
 		interests = new ArrayList<String>();
 		visible = true;
 		wall = new Wall();			
@@ -32,6 +34,7 @@ public class User {
 		
 		friends = new ArrayList<User>();
 		dependents = new ArrayList<Dependent>();
+		//dependents = new ArrayList<User>();
 		interests = new ArrayList<String>();
 		visible = true;
 		wall = new Wall();				
@@ -42,12 +45,33 @@ public class User {
 		friends.add(u);
 	}
 	
+	public void addDependent(Dependent d)
+	{
+		dependents.add(d);
+	}
+	
 	public boolean isFriend(int id) {
 		for (User u : friends) {
 			if (u.getUserId() == id)
 				return true;
 		}
 		
+		return false;
+	}
+	
+	/*public boolean isDependent(int id){
+		for(User u : dependents){
+			if(u.getUserId() == id)
+				return true;
+		}
+		return false;
+	}*/
+	
+	public boolean isDependent(int id){
+		for(Dependent d : dependents){
+			if(d.getId() == id)
+				return true;
+		}
 		return false;
 	}
 	
@@ -88,6 +112,14 @@ public class User {
 	public void setDependents(ArrayList<Dependent> dependents) {
 		this.dependents = dependents;
 	}
+	
+	/*public ArrayList<User> getDependents() {
+		return dependents;
+	}
+	public void setDependents(ArrayList<User> dependents) {
+		this.dependents = dependents;
+	}*/
+	
 	public ArrayList<String> getInterests() {
 		return interests;
 	}

@@ -20,11 +20,11 @@ public class SharableObject {
 		this.data = data;
 	}
 
-	private String getType() {
+	public String getType() {
 		return type;
 	}
 
-	private void setType(String type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	

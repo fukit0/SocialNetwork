@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 
 public class SocialNetwork {
@@ -151,82 +150,143 @@ public class SocialNetwork {
 
 		User activeUser = findUserById(activeUserId);
 
+		String[] parts = name.toUpperCase().split(" ");
+
 		//önce arkadaşlar arasında aranıyor
 		for (User u : activeUser.getFriends()) {
-			if (u.isVisible() && u.getName().contains(name)) {
-				searchResult.add(u);
+			boolean match = true;
+			if (u.isVisible()) {
+				for (String s : parts) {
+					if (!u.getName().toUpperCase().contains(s)) {
+						match = false;
+					}
+				}
+				if (match) {
+					searchResult.add(u);
+				}
 			}
 		}
 
 		//daha sonra tüm sosyal ağ aranıyor
 		for (User u : users) {
-			if (!activeUser.isFriend(u.getUserId()) && u.isVisible() && u.getName().contains(name)) {
-				searchResult.add(u);
-			}
-		}
-
-		//sonuçlar listeleniyor
-		int i = 1;
-		for (User u : searchResult) {
-
-			// arkadaşı olanlar belirtilsin, ortak ilgiler ve gruplar yazsın
-			ArrayList<String> commonInterests = new ArrayList<String>();
-			for(String sAct : findUserById(activeUserId).getInterests())
-			{
-				for(String s : u.getInterests() )
-				{
-					if(sAct.contains(s))
-					{ 
-						commonInterests.add(s); // gruplar eklenicek
+			boolean match = true;
+			if (!activeUser.isFriend(u.getUserId()) && u.isVisible()) {
+				for (String s : parts) {
+					if (!u.getName().toUpperCase().contains(s)) {
+						match = false;
 					}
 				}
-			}
-			System.out.println(i + ". " + u.getName() + " - " + commonInterests.toString());
-			i++;
-		}
-
-		System.out.println("Please choose a person you want to interact:");
-		int choice=0;
-		try {
-			choice = Integer.parseInt(bufferRead.readLine());
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		//arkadaşı ise bilgilerini yazdırıyor
-		if(activeUser.isFriend(searchResult.get(choice-1).getUserId()))
-		{
-			System.out.print(searchResult.get(choice-1).toString());
-
-		}
-		//değil ise ekleyebilme seçeneği aktif hale getiriliyor
-		else
-		{
-			System.out.println(searchResult.get(choice-1).getName()
-					+ " is not your friend.Do you want to add as a friend him/her?(yes/no) :");
-			try {
-				if(bufferRead.readLine().equals("yes"))
-				{
-					activeUser.addFriend(searchResult.get(choice-1));
+				if (match) {
+					searchResult.add(u);
 				}
+			}
+		}
+
+		if (!searchResult.isEmpty()) {
+			//sonuçlar listeleniyor
+			int i = 1;
+			String dep;
+			for (User u : searchResult) {
+				dep="";
+
+				// arkadaşı olanlar belirtilsin, ortak ilgiler ve gruplar yazsın
+				ArrayList<String> commonInterests = new ArrayList<String>();
+
+				for(String sAct : findUserById(activeUserId).getInterests())
+				{
+					String[] interests = sAct.toUpperCase().split(" ");
+					for(String s : u.getInterests() )
+					{
+						for (String interest : interests) {
+							if (s.toUpperCase().contains(interest)){
+								commonInterests.add(interest);}
+						}// ortak gruplar ve arkadaşlar
+					}
+				}
+				for(Dependent d : activeUser.getDependents())
+				{
+					if(d.getId()==u.getUserId()) {
+						dep=d.getDependency();
+						break;
+					}
+				}
+
+				System.out.println(i + ". " + u.getName() + dep +" - " + commonInterests.toString());
+				i++;
+			}
+
+			System.out.println(i + ". Cancel");
+
+			System.out.println("Please choose a person you want to interact:");
+			int choice=0;
+			try {
+				choice = Integer.parseInt(bufferRead.readLine());
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
+
+			if(choice<i && choice>0)
+			{	
+				//arkadaşı ise bilgilerini yazdırıyor
+				if(activeUser.isFriend(searchResult.get(choice-1).getUserId()))
+				{
+					System.out.print(searchResult.get(choice-1).toString());
+
+				}
+				//değil ise ekleyebilme seçeneği aktif hale getiriliyor
+				else
+				{
+					System.out.println(searchResult.get(choice-1).getName()
+							+ " is not your friend.Do you want to add as a friend him/her?(yes/no) :");
+					try {
+
+						if(bufferRead.readLine().equals("yes"))
+						{
+							activeUser.addFriend(searchResult.get(choice-1));
+
+							System.out.println("Do you want to add this person as a dependent?(yes/no) ["+searchResult.get(choice-1).getName()+"]");
+							try {
+								if(bufferRead.readLine().equals("yes"))
+								{
+									System.out.println("as a father press 'f'\n" +
+											"as a mother press 'm'\n" +
+											"as a son press 's'\n" +
+											"as a daughter press 'd'\n" +
+											"as a sister/brother press 'b'\n" +
+											"as a aunt press 'a'\n" +
+											"as a uncle press 'u'\n" +
+											"as a wife press 'w'\n" +
+											"as a husband press 'h'\n");
+									Dependent d = new Dependent(searchResult.get(choice-1).getUserId(),bufferRead.readLine().charAt(0));
+									activeUser.addDependent(d);
+								}
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+			}
+
+		} else {
+			System.out.println("User not found!");
 		}
-
-
 
 	}
 
 	public void share(){
 		//file name error
-		
+
 		int choseType=0;
 		do{
 			System.out.println("Which type of file do you like to post on your wall?\n"
@@ -234,9 +294,9 @@ public class SocialNetwork {
 					+"2.Link\n"
 					+"3.Media\n"
 					+"4.Back");
-			
+
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-			
+
 			try {
 				choseType = Integer.parseInt(bufferRead.readLine());
 			} catch (NumberFormatException | IOException e) {
@@ -248,7 +308,7 @@ public class SocialNetwork {
 			case 1: typeOfFile="text";break;
 			case 2: typeOfFile="link";break;
 			case 3: typeOfFile="media";break;
-			
+
 			}
 			if(choseType!=4)
 			{
@@ -261,14 +321,14 @@ public class SocialNetwork {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	
+
 				SharableFactory factory = new SharableFactory();
-	
+
 				Command c = new ShareCommand(findUserById(activeUserId).getWall(), factory.createShaObj(fileName, typeOfFile));
 				c.run();
-			
+
 			}
-			
+
 		}while(choseType!=4);
 	}
 
@@ -284,7 +344,7 @@ public class SocialNetwork {
 
 	public void interests() {
 		// TODO Auto-generated method stub
-		
+
 		int index=1;
 		for(String i : findUserById(activeUserId).getInterests())
 		{
@@ -297,7 +357,7 @@ public class SocialNetwork {
 					"2.Delete old one\n"+
 					"3.Back");
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-			
+
 			try {
 				choice = Integer.parseInt(bufferRead.readLine());
 			} catch (NumberFormatException e) {
@@ -332,9 +392,9 @@ public class SocialNetwork {
 					e.printStackTrace();
 				}
 				findUserById(activeUserId).deleteInterest(input-1);break;
-				
+
 			}
-		}while(choice!=3 && choice>0);
+		}while(choice!=3);
 	}
 
 
@@ -342,6 +402,5 @@ public class SocialNetwork {
 		// TODO Auto-generated method stub
 		System.out.println(findUserById(activeUserId).toString());
 	}
-
 
 }

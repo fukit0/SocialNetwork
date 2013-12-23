@@ -10,11 +10,11 @@ public class Main {
 		User u2 = new User(22, "onur cem senel","onur@gmail","456");
 		User u3 = new User(33, "yasin bozbay","yasin@gmail","789");
 		
-		u1.addFriend(u3);
+		/*u1.addFriend(u3);
 		u1.addFriend(u2);
 		
 		u2.addFriend(u1);
-		u3.addFriend(u2);
+		u3.addFriend(u2);*/
 		
 		sc.getUsers().add(u1);
 		sc.getUsers().add(u2);

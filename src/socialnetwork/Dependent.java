@@ -1,16 +1,34 @@
 package socialnetwork;
 
-public class Dependent {
+public class Dependent{
 	
 	//class variables
 	private int id;
 	private String dependency;
 	
 	//constructor
-		public Dependent(int id,String dependency)
-		{
+		public Dependent(int id,char dependency)
+		{	
 			this.id=id;
-			this.dependency=dependency;
+			
+			switch(dependency){
+			case 'f': 
+				this.dependency=" - father"; break;
+			case 'm': 
+				this.dependency=" - mother"; break;
+			case 's': 
+				this.dependency=" - son"; break;
+			case 'd': 
+				this.dependency=" - daughter"; break;
+			case 'b': 
+				this.dependency=" - sister/brother"; break;
+			case 'a': 
+				this.dependency=" - aunt"; break;
+			case 'u': 
+				this.dependency=" - uncle"; break;
+			
+			
+			}
 		}
 		
 	//getters & setters	
