@@ -11,7 +11,9 @@ public class SocialNetwork {
 	//class variables
 	private String name; 
 	private static int userId;
+	private static int groupId;
 	private ArrayList<User> users;
+	private GroupComposite groupRoot;
 	private int activeUserId;
 	private static SocialNetwork _instance;
 
@@ -21,6 +23,7 @@ public class SocialNetwork {
 	{
 		this.name=name;
 		userId = 0;
+		groupId = 0;
 		users = new ArrayList<User>();
 		activeUserId=-999;
 	}
@@ -354,8 +357,8 @@ public class SocialNetwork {
 		int choice = 0;
 		do{
 			System.out.println("1.Add new interests\n"+					
-					"2.Delete old one\n"+
-					"3.Back");
+							   "2.Delete old one\n"+
+					           "3.Back");
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
 			try {
@@ -369,34 +372,132 @@ public class SocialNetwork {
 			}
 
 			switch(choice){
-			case 1:
-				System.out.println("Type your new interest");
-				String interest="";
-				try {
-					interest = bufferRead.readLine();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				findUserById(activeUserId).addInterest(interest);break;
-			case 2:
-				System.out.println("Enter index of interest that you want to delete:");
-				int input = 0;
-				try {
-					input = Integer.parseInt(bufferRead.readLine());
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				findUserById(activeUserId).deleteInterest(input-1);break;
-
+				case 1:
+					System.out.println("Type your new interest");
+					String interest="";
+					try {
+						interest = bufferRead.readLine();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					findUserById(activeUserId).addInterest(interest);break;
+				case 2:
+					System.out.println("Enter index of interest that you want to delete:");
+					int input = 0;
+					try {
+						input = Integer.parseInt(bufferRead.readLine());
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					findUserById(activeUserId).deleteInterest(input-1);break;
 			}
 		}while(choice!=3);
 	}
+	
+	public void groups() {
 
+		int choice = 0;
+		do{
+			System.out.println("1.Create new group\n"+					
+							   "2.Search groups\n"+
+					           "3.Back");
+			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+
+			try {
+				choice = Integer.parseInt(bufferRead.readLine());
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			switch(choice){
+				case 1:
+					System.out.println("Type your group name");
+					String name="";
+					try {
+						name = bufferRead.readLine();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					groupId++;
+					GroupLeaf group = new GroupLeaf(groupId, name); //grubun suanda alt grubu olmadigi icin leaf olarak yaratildi
+					group.setAdmin(findUserById(activeUserId).getUserId()); //grubu kuran kisi grubun yöneticisi olarak ataniyor
+					addGroup(group); //sosyal agdaki gruplarin icine ekleniyor
+					
+					break;
+					
+				case 2:
+					System.out.println("Group name:");
+					String groupName="";
+					try {
+						groupName = bufferRead.readLine();
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					ArrayList<GroupComponent> result = groupRoot.searchGroup(groupName);
+					int index = 0;
+					for (GroupComponent c : result) {
+						index++;
+						System.out.println(index + " ." + c.getName());
+					}
+					
+					System.out.println("Enter index of group that you want to choose:");
+					int input = 0;
+					try {
+						input = Integer.parseInt(bufferRead.readLine());
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					break;
+					
+			}
+		}while(choice!=3);
+		
+	}
+	
+	public void addGroup(GroupComponent c) {
+		groupRoot.addGroup(c);
+	}
+	
+	public void removeGroup(GroupComponent c) {
+		groupRoot.removeGroup(c);
+	}
+		
+	public void displayAllGroups() {
+		groupRoot.displayGroup();
+	}
+	
+	public void displayGroupMembers(GroupComponent c) {
+		c.displayGroupMembers();
+	}
+	
+	public void addMemberToGroup(GroupComponent c, User u) {
+		c.addMember(u);
+	}
+	
+	public void removeMemberFromGroup(GroupComponent c, User u) {
+		c.removeMember(u);
+	}
 
 	public void viewProfile() {
 		// TODO Auto-generated method stub

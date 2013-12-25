@@ -53,8 +53,8 @@ public class Main {
 						sc.share();
 					if(choice2==3)
 						sc.interests();
-					if(choice2==3)
-						
+					if(choice2==4)
+						sc.groups();
 					if(choice2==5)
 						sc.viewProfile();
 					
