@@ -37,7 +37,9 @@ public class Main {
 					    id=sc.signUp();
 						break;
 				case 2:					
-						id=sc.signIn(); 
+						do{				
+							id=sc.signIn();
+							}while(id==-1);
 						break;
 			}
 			

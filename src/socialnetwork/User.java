@@ -45,9 +45,19 @@ public class User {
 		friends.add(u);
 	}
 	
+	public void deleteFriend(User u) {
+		// TODO Auto-generated method stub
+		friends.remove(u);
+	}
+	
 	public void addDependent(Dependent d)
 	{
 		dependents.add(d);
+	}
+	
+	public void deleteDependent(int id)
+	{
+		dependents.remove(id);
 	}
 	
 	public boolean isFriend(int id) {

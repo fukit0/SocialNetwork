@@ -99,7 +99,7 @@ public class SocialNetwork {
 		String pass="";
 
 		try{
-			System.out.print("E-mail: ");
+			System.out.print("\nE-mail: ");
 			email=bufferRead.readLine();
 
 			System.out.print("Password ");
@@ -236,21 +236,46 @@ public class SocialNetwork {
 			if(choice<i && choice>0)
 			{	
 				//arkadaşı ise bilgilerini yazdırıyor
-				if(activeUser.isFriend(searchResult.get(choice-1).getUserId()))
+				int otherId = searchResult.get(choice-1).getUserId();
+				User otherUser = searchResult.get(choice-1);
+				if(activeUser.isFriend(otherId))
 				{
-					System.out.print(searchResult.get(choice-1).toString());
-
+					System.out.println(otherUser.toString()+"\n\n\n\n");
+					System.out.println("1.Unfriend \n"+
+									   "2.Back");
+								//"3.Send a Message");
+					int c=0;
+					try {
+						 c = Integer.parseInt(bufferRead.readLine());
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(c==1)
+					{
+						if(activeUser.isDependent(otherId))
+						{
+							activeUser.deleteDependent(otherId);
+							activeUser.deleteFriend(otherUser);
+						}
+						activeUser.deleteFriend(otherUser);
+					}
+					
+					
 				}
 				//değil ise ekleyebilme seçeneği aktif hale getiriliyor
 				else
 				{
-					System.out.println(searchResult.get(choice-1).getName()
+					System.out.println(otherUser.getName()
 							+ " is not your friend.Do you want to add as a friend him/her?(yes/no) :");
 					try {
 
 						if(bufferRead.readLine().equals("yes"))
 						{
-							activeUser.addFriend(searchResult.get(choice-1));
+							activeUser.addFriend(otherUser);
 
 							System.out.println("Do you want to add this person as a dependent?(yes/no) ["+searchResult.get(choice-1).getName()+"]");
 							try {
@@ -265,7 +290,7 @@ public class SocialNetwork {
 											"as a uncle press 'u'\n" +
 											"as a wife press 'w'\n" +
 											"as a husband press 'h'\n");
-									Dependent d = new Dependent(searchResult.get(choice-1).getUserId(),bufferRead.readLine().charAt(0));
+									Dependent d = new Dependent(otherId,bufferRead.readLine().charAt(0));
 									activeUser.addDependent(d);
 								}
 							} catch (IOException e) {
