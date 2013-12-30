@@ -4,13 +4,12 @@ import java.util.ArrayList;
 
 public class GroupLeaf extends GroupComponent {
 
-	private int admin;
-	private ArrayList<User> groupMembers;
+	private ArrayList<Integer> groupMembersIds;
 	
-	public GroupLeaf(int id, String name) {
-		super(id, name);
+	public GroupLeaf(int id, int adminId, String name) {
+		super(id, adminId, name);
 		// TODO Auto-generated constructor stub
-		groupMembers = new ArrayList<User>();
+		groupMembersIds = new ArrayList<Integer>();
 	}
 
 	@Override
@@ -36,29 +35,21 @@ public class GroupLeaf extends GroupComponent {
 		// TODO Auto-generated method stub
 		System.out.println(getName());
 		
-		for (User u : groupMembers) {
-			System.out.println("\n" + u.toString());
+		for (int i : groupMembersIds) {
+			System.out.println("\n" + i);
 		}
 	}
 
 	@Override
-	public void addMember(User u) {
+	public void addMember(int userId) {
 		// TODO Auto-generated method stub
-		groupMembers.add(u);
+		groupMembersIds.add(userId);
 	}
 
 	@Override
-	public void removeMember(User u) {
+	public void removeMember(int userId) {
 		// TODO Auto-generated method stub
-		groupMembers.remove(u);
-	}
-
-	public int getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(int admin) {
-		this.admin = admin;
+		groupMembersIds.remove(new Integer(userId));
 	}
 
 	@Override
@@ -72,6 +63,18 @@ public class GroupLeaf extends GroupComponent {
 		
 		return result;
 		
+	}
+	
+	@Override
+	public boolean searchMember(int userId) {
+		// TODO Auto-generated method stub
+		
+		for (int i : groupMembersIds) {
+			if (i == userId)
+				return true;
+		}
+		
+		return false;
 	}
 
 }

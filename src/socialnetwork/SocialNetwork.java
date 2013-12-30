@@ -25,6 +25,7 @@ public class SocialNetwork {
 		userId = 0;
 		groupId = 0;
 		users = new ArrayList<User>();
+		groupRoot = new GroupComposite(0, -999, "Groups");
 		activeUserId=-999;
 	}
 
@@ -429,8 +430,8 @@ public class SocialNetwork {
 		int choice = 0;
 		do{
 			System.out.println("1.Create new group\n"+					
-							   "2.Search groups\n"+
-					           "3.Back");
+					"2.Search groups\n"+
+					"3.Back");
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
 			try {
@@ -444,7 +445,7 @@ public class SocialNetwork {
 			}
 
 			switch(choice){
-				case 1:
+				case 1: //yeni grup ekleme
 					System.out.println("Type your group name");
 					String name="";
 					try {
@@ -453,15 +454,16 @@ public class SocialNetwork {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+	
 					groupId++;
-					GroupLeaf group = new GroupLeaf(groupId, name); //grubun suanda alt grubu olmadigi icin leaf olarak yaratildi
-					group.setAdmin(findUserById(activeUserId).getUserId()); //grubu kuran kisi grubun yöneticisi olarak ataniyor
+					//grubun suanda alt grubu olmadigi icin leaf olarak yaratildi
+					//grubu kuran kisi grubun yöneticisi olarak ataniyor
+					GroupLeaf group = new GroupLeaf(groupId, activeUserId, name);
 					addGroup(group); //sosyal agdaki gruplarin icine ekleniyor
-					
+	
 					break;
-					
-				case 2:
+	
+				case 2: //grup arama
 					System.out.println("Group name:");
 					String groupName="";
 					try {
@@ -473,14 +475,15 @@ public class SocialNetwork {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+	
+					//gruplari arayan metot
 					ArrayList<GroupComponent> result = groupRoot.searchGroup(groupName);
 					int index = 0;
 					for (GroupComponent c : result) {
 						index++;
-						System.out.println(index + " ." + c.getName());
+						System.out.println(index + ". " + c.getName());
 					}
-					
+	
 					System.out.println("Enter index of group that you want to choose:");
 					int input = 0;
 					try {
@@ -492,36 +495,75 @@ public class SocialNetwork {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					break;
-					
-			}
-		}while(choice!=3);
-		
-	}
 	
+					GroupComponent selectedGroup = result.get(input-1);
+	
+					boolean admin = false;
+					boolean alreadyJoined = false;
+					if (selectedGroup.getAdminId() == activeUserId) { //aktif kullanici grubun kurucusu ise
+						admin = true;
+						System.out.println("1.Delete the group\n"+
+										   "2.Back");
+					} else {
+						if (selectedGroup.searchMember(activeUserId)) { //aktif kullanici bu gruba daha onceden katilmis ise
+							alreadyJoined = true;
+							System.out.println("1.Leave from group\n"+
+									   		   "2.Back");
+						} else {
+							System.out.println("1.Join the group\n"+
+									           "2.Back");
+						}
+					}
+					
+					try {
+						input = Integer.parseInt(bufferRead.readLine());
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					if (input == 1) {
+						if (admin) {
+							removeGroup(selectedGroup);							
+						} else if (alreadyJoined) {
+							selectedGroup.removeMember(activeUserId);
+						} else {
+							selectedGroup.addMember(activeUserId);
+						}
+					}
+	
+					break;
+			}
+			
+		}while(choice!=3);
+
+	}
+
 	public void addGroup(GroupComponent c) {
 		groupRoot.addGroup(c);
 	}
-	
+
 	public void removeGroup(GroupComponent c) {
 		groupRoot.removeGroup(c);
 	}
-		
+
 	public void displayAllGroups() {
 		groupRoot.displayGroup();
 	}
-	
+
 	public void displayGroupMembers(GroupComponent c) {
 		c.displayGroupMembers();
 	}
-	
-	public void addMemberToGroup(GroupComponent c, User u) {
-		c.addMember(u);
+
+	public void addMemberToGroup(GroupComponent c, int userId) {
+		c.addMember(userId);
 	}
-	
-	public void removeMemberFromGroup(GroupComponent c, User u) {
-		c.removeMember(u);
+
+	public void removeMemberFromGroup(GroupComponent c, int userId) {
+		c.removeMember(userId);
 	}
 
 	public void viewProfile() {

@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public abstract class GroupComponent {
 	
 	protected int id;
+	protected int adminId;
 	protected String name;
 	
-	public GroupComponent(int id, String name) {
+	public GroupComponent(int id, int adminId, String name) {
 		this.setId(id);
+		this.setAdminId(adminId);
 		this.setName(name);
 	}
 	
@@ -17,8 +19,9 @@ public abstract class GroupComponent {
 	public abstract ArrayList<GroupComponent> searchGroup(String name);
 	public abstract void displayGroup();
 	public abstract void displayGroupMembers();
-	public abstract void addMember(User u);
-	public abstract void removeMember(User u);
+	public abstract boolean searchMember(int userId);
+	public abstract void addMember(int userId);
+	public abstract void removeMember(int userId);
 
 	public int getId() {
 		return id;
@@ -34,6 +37,14 @@ public abstract class GroupComponent {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getAdminId() {
+		return adminId;
+	}
+
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
 	}
 
 }
