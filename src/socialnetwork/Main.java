@@ -33,13 +33,13 @@ public class Main {
 			
 			int id=0;
 			switch(choice){
-				case 1:
-					    id=sc.signUp();
+				case 1: do{					    	
+							id=sc.signUp();
+						}while(id==-1);
 						break;
-				case 2:					
-						do{				
+				case 2:	do{				
 							id=sc.signIn();
-							}while(id==-1);
+						}while(id==-1);
 						break;
 			}
 			
