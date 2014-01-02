@@ -43,6 +43,7 @@ public class User {
 	public void addFriend(User u)
 	{
 		friends.add(u);
+		//u.addFriend(this); //bu kullaniciyi ekleyen kisinin arkadaslarina da bu kullanici ekleniyor
 	}
 	
 	public void deleteFriend(User u) {
@@ -87,7 +88,9 @@ public class User {
 	
 	public String toString()
 	{
-		return (name+wall.toString()+"\n");
+		return (name + "\n\n" + 
+				"User's wall\n" + 
+				"------------------------------\n" + wall.toString() + "\n");
 	}
 	
 	// getters & setters

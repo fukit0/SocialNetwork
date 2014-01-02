@@ -65,12 +65,13 @@ public class SocialNetwork {
 		return _instance;
 	}
 
-	public int signUp()
+public int signUp()
 	{
 		userId++;
 
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		User u = new User();
+		String input="";
 
 		u.setUserId(userId);
 		try{
@@ -78,14 +79,29 @@ public class SocialNetwork {
 			u.setName(bufferRead.readLine());
 
 			System.out.print("E-mail: ");
-			u.setEmail(bufferRead.readLine());
-
+			input=bufferRead.readLine();
+			
+			if(input.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"))
+			{				
+				u.setEmail(input);
+			}else{
+				throw new IOException("Please enter valid email!");
+			}
+	
 			System.out.print("Password: ");
-			u.setPass(bufferRead.readLine());
+			input=bufferRead.readLine();
+			
+			if(input.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})"))
+			{			
+				u.setPass(input);
+			}else{
+				throw new IOException("Please enter valid password!");
+			}
+			
 		}catch(IOException e){
-			System.out.println("Hata Oluştu!");
+			System.out.println(e.getMessage());
+			return -1;
 		}
-
 
 		users.add(u);
 
@@ -102,13 +118,13 @@ public class SocialNetwork {
 		try{
 			System.out.print("\nE-mail: ");
 			email=bufferRead.readLine();
-
+			
 			System.out.print("Password ");
 			pass=bufferRead.readLine();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Hata Oluştu!");
+			System.out.println("Invalid email or password!");
 		}
 
 
@@ -277,6 +293,8 @@ public class SocialNetwork {
 						if(bufferRead.readLine().equals("yes"))
 						{
 							activeUser.addFriend(otherUser);
+							//gecici cozum!!!
+							otherUser.addFriend(activeUser);
 
 							System.out.println("Do you want to add this person as a dependent?(yes/no) ["+searchResult.get(choice-1).getName()+"]");
 							try {
