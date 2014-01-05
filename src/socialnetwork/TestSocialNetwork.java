@@ -6,21 +6,21 @@ public class TestSocialNetwork {
 		
 		SocialNetwork sc = SocialNetwork.getSocialNetwork("foi"); //singleton test
 		
-		User furkan = new User(1, "furkan tanriverdi","furkan@ege.edu","qwE123");
-		User onur = new User(2, "onur cem senel","onur@ege.edu","asD456");
-		User yasin = new User(3, "yasin bozbay","yasin@ege.edu","zxC789");
-		User omer = new User(4, "Ã¶mer faruk alaca","Ã¶mer@ege.edu","rtY123");
-		User ahmet = new User(5, "amat cahat","amat@ege.edu","fgH456");
-		User taner = new User(6, "taner aydogan","tanerer@ege.edu","vbn789");
+		User furkan = new User(101, "furkan tanriverdi","furkan@ege.edu","qwE123");
+		User onur = new User(102, "onur cem senel","onur@ege.edu","asD456");
+		User yasin = new User(103, "yasin bozbay","yasin@ege.edu","zxC789");
+		User omer = new User(104, "ömer faruk alaca","omer@ege.edu","rtY123");
+		User ahmet = new User(105, "amat cahat","amat@ege.edu","fgH456");
+		User taner = new User(106, "taner aydogan","tanerer@ege.edu","vbn789");
 		
-		GroupComponent tenisSeverler = new GroupLeaf(1, 1, "tenis severler");
+		GroupComponent tenisSeverler = new GroupLeaf(101, 101, "tenis severler");
+		tenisSeverler.addMember(106);
 		sc.addGroup(tenisSeverler);
-		tenisSeverler.addMember(6);
 		
-		GroupComponent girisimciler = new GroupLeaf(2, 4, "giriÅŸimciler");
+		GroupComponent girisimciler = new GroupLeaf(102, 104, "giriþimciler");
+		girisimciler.addMember(102);
+		girisimciler.addMember(103);
 		sc.addGroup(girisimciler);
-		girisimciler.addMember(2);
-		girisimciler.addMember(3);	
 		
 		furkan.addFriend(yasin);
 		yasin.addFriend(furkan);
@@ -31,7 +31,7 @@ public class TestSocialNetwork {
 		furkan.addFriend(taner);
 		taner.addFriend(furkan);
 		
-		furkan.addDependent(new Dependent(3,'b'));
+		furkan.addDependent(new Dependent(103,'b'));
 		furkan.addInterest("tennis");
 		furkan.addInterest("snowboard");
 		furkan.addInterest("fifa");

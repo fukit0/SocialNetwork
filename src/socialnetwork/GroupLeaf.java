@@ -10,6 +10,7 @@ public class GroupLeaf extends GroupComponent {
 		super(id, adminId, name);
 		// TODO Auto-generated constructor stub
 		groupMembersIds = new ArrayList<Integer>();
+		groupMembersIds.add(adminId);
 	}
 
 	@Override
@@ -56,8 +57,15 @@ public class GroupLeaf extends GroupComponent {
 	public ArrayList<GroupComponent> searchGroup(String name) {
 		// TODO Auto-generated method stub
 		ArrayList<GroupComponent> result = new ArrayList<GroupComponent>();
+		String[] parts = name.toUpperCase().split(" ");
+		boolean match = true;
 		
-		if (this.getName().contains(name)) {
+		for (String s : parts) {
+			if (!this.getName().toUpperCase().contains(s)) {
+				match = false;
+			}
+		}
+		if (match) {
 			result.add(this);
 		}
 		
@@ -75,6 +83,27 @@ public class GroupLeaf extends GroupComponent {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void listUserGroups(int userId) {
+		// TODO Auto-generated method stub
+		
+		for (int i : groupMembersIds) {
+			if (i == userId) {
+				System.out.println(name);
+				break;
+			}
+		}
+		
+	}
+	
+	@Override
+	public GroupComposite convertToComposite() { //leaf uyeleriyle birlikte composite yapiliyor
+		GroupComposite composite = new GroupComposite(id, adminId, name);
+		composite.setGroupMembersIds(groupMembersIds);
+		
+		return composite;
 	}
 
 }

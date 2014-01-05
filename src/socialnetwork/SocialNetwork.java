@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-
 public class SocialNetwork {
 
 	//class variables
@@ -75,7 +74,7 @@ public int signUp()
 
 		u.setUserId(userId);
 		try{
-			System.out.print("Your name and surname: ");
+			System.out.print("\nYour name and surname: ");
 			u.setName(bufferRead.readLine());
 
 			System.out.print("E-mail: ");
@@ -111,6 +110,7 @@ public int signUp()
 	}
 
 	public int signIn(){
+		
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		String email="";
 		String pass="";
@@ -124,10 +124,8 @@ public int signUp()
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Invalid email or password!");
+			System.out.println("Invalid input!");
 		}
-
-
 
 		/*Iterator<User> i = users.iterator();
 		while(i.hasNext())
@@ -159,13 +157,13 @@ public int signUp()
 
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
-		System.out.println("Name & Surname: ");
+		System.out.println("\nName & Surname: ");
 		String name="";
 		try {
 			name = bufferRead.readLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Hata Oluştu!");
+			System.out.println("Invalid input!");
 		}
 
 		User activeUser = findUserById(activeUserId);
@@ -237,7 +235,7 @@ public int signUp()
 
 			System.out.println(i + ". Cancel");
 
-			System.out.println("Please choose a person you want to interact:");
+			System.out.println("\nPlease choose a person you want to interact:");
 			int choice=0;
 			try {
 				choice = Integer.parseInt(bufferRead.readLine());
@@ -246,7 +244,7 @@ public int signUp()
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Invalid input!");
 			}
 
 
@@ -258,7 +256,7 @@ public int signUp()
 				if(activeUser.isFriend(otherId))
 				{
 					System.out.println(otherUser.toString()+"\n\n\n\n");
-					System.out.println("1.Unfriend \n"+
+					System.out.println("\n1.Unfriend \n"+
 									   "2.Back");
 								//"3.Send a Message");
 					int c=0;
@@ -286,7 +284,7 @@ public int signUp()
 				//değil ise ekleyebilme seçeneği aktif hale getiriliyor
 				else
 				{
-					System.out.println(otherUser.getName()
+					System.out.println("\n" + otherUser.getName()
 							+ " is not your friend.Do you want to add as a friend him/her?(yes/no) :");
 					try {
 
@@ -296,7 +294,7 @@ public int signUp()
 							//gecici cozum!!!
 							otherUser.addFriend(activeUser);
 
-							System.out.println("Do you want to add this person as a dependent?(yes/no) ["+searchResult.get(choice-1).getName()+"]");
+							System.out.println("\nDo you want to add this person as a dependent?(yes/no) ["+searchResult.get(choice-1).getName()+"]");
 							try {
 								if(bufferRead.readLine().equals("yes"))
 								{
@@ -314,19 +312,19 @@ public int signUp()
 								}
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
-								e.printStackTrace();
+								System.out.println("Invalid input!");
 							}
 						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Invalid input!");
 					}
 
 				}
 			}
 
 		} else {
-			System.out.println("User not found!");
+			System.out.println("User not found");
 		}
 
 	}
@@ -336,11 +334,11 @@ public int signUp()
 
 		int choseType=0;
 		do{
-			System.out.println("Which type of file do you like to post on your wall?\n"
-					+"1.Text\n"
-					+"2.Link\n"
-					+"3.Media\n"
-					+"4.Back");
+			System.out.println("\nWhich type of file do you like to post on your wall?\n"
+							  +"1.Text\n"
+							  +"2.Link\n"
+							  +"3.Media\n"
+							  +"4.Back");
 
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
@@ -348,8 +346,9 @@ public int signUp()
 				choseType = Integer.parseInt(bufferRead.readLine());
 			} catch (NumberFormatException | IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Invalid input!");
 			}
+			
 			String typeOfFile = "";
 			switch (choseType){
 			case 1: typeOfFile="text";break;
@@ -357,16 +356,16 @@ public int signUp()
 			case 3: typeOfFile="media";break;
 
 			}
+			
 			if(choseType!=4)
 			{
-
-				System.out.print("Type your file name:");
+				System.out.print("\nType your file name:");
 				String fileName="";
 				try {
 					fileName = bufferRead.readLine();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Invalid input!");
 				}
 
 				SharableFactory factory = new SharableFactory();
@@ -400,7 +399,7 @@ public int signUp()
 		}
 		int choice = 0;
 		do{
-			System.out.println("1.Add new interests\n"+					
+			System.out.println("\n1.Add new interests\n"+					
 							   "2.Delete old one\n"+
 					           "3.Back");
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
@@ -409,68 +408,79 @@ public int signUp()
 				choice = Integer.parseInt(bufferRead.readLine());
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Invalid input!");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Invalid input!");
 			}
 
 			switch(choice){
 				case 1:
-					System.out.println("Type your new interest");
+					System.out.println("\nType your new interest");
 					String interest="";
 					try {
 						interest = bufferRead.readLine();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Invalid input!");
 					}
-					findUserById(activeUserId).addInterest(interest);break;
+					
+					findUserById(activeUserId).addInterest(interest);
+					break;
+					
 				case 2:
-					System.out.println("Enter index of interest that you want to delete:");
+					System.out.println("\nEnter index of interest that you want to delete:");
 					int input = 0;
 					try {
 						input = Integer.parseInt(bufferRead.readLine());
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Invalid input!");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Invalid input!");
 					}
-					findUserById(activeUserId).deleteInterest(input-1);break;
+					
+					findUserById(activeUserId).deleteInterest(input-1);
+					break;
+					
 			}
+			
 		}while(choice!=3);
+		
 	}
 	
 	public void groups() {
-
+		
+		System.out.println("\nGroups that I joined:");
+		groupRoot.listUserGroups(activeUserId); //kullanicinin katildigi gruplar listeleniyor
+		
 		int choice = 0;
 		do{
-			System.out.println("1.Create new group\n"+					
-					"2.Search groups\n"+
-					"3.Back");
+			System.out.println("\n1.Create new group\n"+					
+							   "2.Search groups\n"+
+							   "3.Back");
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
 			try {
 				choice = Integer.parseInt(bufferRead.readLine());
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Invalid input!");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Invalid input!");
 			}
 
 			switch(choice){
 				case 1: //yeni grup ekleme
-					System.out.println("Type your group name");
+					System.out.println("\nType your group name");
 					String name="";
 					try {
 						name = bufferRead.readLine();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Invalid input!");
 					}
 	
 					groupId++;
@@ -482,16 +492,13 @@ public int signUp()
 					break;
 	
 				case 2: //grup arama
-					System.out.println("Group name:");
+					System.out.println("\nGroup name:");
 					String groupName="";
 					try {
 						groupName = bufferRead.readLine();
-					} catch (NumberFormatException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Invalid input!");
 					}
 	
 					//gruplari arayan metot
@@ -502,57 +509,91 @@ public int signUp()
 						System.out.println(index + ". " + c.getName());
 					}
 	
-					System.out.println("Enter index of group that you want to choose:");
-					int input = 0;
-					try {
-						input = Integer.parseInt(bufferRead.readLine());
-					} catch (NumberFormatException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	
-					GroupComponent selectedGroup = result.get(input-1);
-	
-					boolean admin = false;
-					boolean alreadyJoined = false;
-					if (selectedGroup.getAdminId() == activeUserId) { //aktif kullanici grubun kurucusu ise
-						admin = true;
-						System.out.println("1.Delete the group\n"+
-										   "2.Back");
+					if (!result.isEmpty()) {
+						System.out.println("\nEnter index of group that you want to choose:");
+						int input = 0;
+						try {
+							input = Integer.parseInt(bufferRead.readLine());
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							System.out.println("Invalid input!");
+						}
+		
+						GroupComponent selectedGroup = result.get(input-1);
+		
+						boolean admin = false;
+						boolean alreadyJoined = false;
+						if (selectedGroup.getAdminId() == activeUserId) { //aktif kullanici grubun kurucusu ise
+							admin = true;
+							System.out.println("\n1.Delete the group\n"+
+											   "2.Add subgroup\n"+
+											   "3.Back");
+						} else {
+							if (selectedGroup.searchMember(activeUserId)) { //aktif kullanici bu gruba daha onceden katilmis ise
+								alreadyJoined = true;
+								System.out.println("\n1.Leave from group\n"+
+												   "2.Add subgroup\n"+
+										   		   "3.Back");
+							} else {
+								System.out.println("\n1.Join the group\n"+
+												   "2.Add subgroup\n"+
+								   		   		   "3.Back");
+							}
+						}
+						
+						try {
+							input = Integer.parseInt(bufferRead.readLine());
+						} catch (NumberFormatException e) {
+							// TODO Auto-generated catch block
+							System.out.println("Invalid input!");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							System.out.println("Invalid input!");
+						}
+						
+						switch (input) { //secilen grupla hangi islemin yapilacagi belirleniyor
+							case 1: //grubu silme, gruba katilma, gruptan cikma
+								if (admin) {
+									removeGroup(selectedGroup);							
+								} else if (alreadyJoined) {
+									selectedGroup.removeMember(activeUserId);
+								} else {
+									selectedGroup.addMember(activeUserId);
+								}
+								break;
+								
+							case 2: //alt grup ekleme
+								System.out.println("\nGroup name:");
+								groupName="";
+								try {
+									groupName = bufferRead.readLine();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+												
+								//alt grup eklenecegi icin daha onceden leaf olarak eklenen grup composite yapiliyor
+								GroupComposite cloned = selectedGroup.convertToComposite();
+								
+								//leaf olan eski grup siliniyor
+								removeGroup(selectedGroup);
+								
+								//composite olan yeni gruba alt grubu ekleniyor
+								cloned.addGroup(new GroupLeaf(groupId, activeUserId, selectedGroup.getName() + " -> " + groupName));
+								
+								//yeni grup alt grubuyla beraber sosyal aga ekleniyor
+								addGroup(cloned);
+								
+								break;
+
+							default:
+								break;
+						}
 					} else {
-						if (selectedGroup.searchMember(activeUserId)) { //aktif kullanici bu gruba daha onceden katilmis ise
-							alreadyJoined = true;
-							System.out.println("1.Leave from group\n"+
-									   		   "2.Back");
-						} else {
-							System.out.println("1.Join the group\n"+
-									           "2.Back");
-						}
+						System.out.println("Group not found");
 					}
 					
-					try {
-						input = Integer.parseInt(bufferRead.readLine());
-					} catch (NumberFormatException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					if (input == 1) {
-						if (admin) {
-							removeGroup(selectedGroup);							
-						} else if (alreadyJoined) {
-							selectedGroup.removeMember(activeUserId);
-						} else {
-							selectedGroup.addMember(activeUserId);
-						}
-					}
-	
+				default:
 					break;
 			}
 			
@@ -561,6 +602,7 @@ public int signUp()
 	}
 
 	public void addGroup(GroupComponent c) {
+		//c.addMember(activeUserId);
 		groupRoot.addGroup(c);
 	}
 
@@ -574,14 +616,6 @@ public int signUp()
 
 	public void displayGroupMembers(GroupComponent c) {
 		c.displayGroupMembers();
-	}
-
-	public void addMemberToGroup(GroupComponent c, int userId) {
-		c.addMember(userId);
-	}
-
-	public void removeMemberFromGroup(GroupComponent c, int userId) {
-		c.removeMember(userId);
 	}
 
 	public void viewProfile() {

@@ -12,8 +12,13 @@ public class GroupComposite extends GroupComponent {
 		// TODO Auto-generated constructor stub
 		children = new ArrayList<GroupComponent>();
 		groupMembersIds = new ArrayList<Integer>();
+		groupMembersIds.add(adminId);
 	}
 
+	protected void setGroupMembersIds(ArrayList<Integer> groupMembersIds) {
+		this.groupMembersIds = groupMembersIds;
+	}
+	
 	@Override
 	public void addGroup(GroupComponent c) {
 		// TODO Auto-generated method stub
@@ -24,6 +29,11 @@ public class GroupComposite extends GroupComponent {
 	public void removeGroup(GroupComponent c) {
 		// TODO Auto-generated method stub
 		children.remove(c);
+		for (GroupComponent i : children) { //silinecek olan grup alt grup ise
+			if (i instanceof GroupComposite) {
+				i.removeGroup(c);
+			}
+		}
 	}
 
 	@Override
@@ -63,14 +73,21 @@ public class GroupComposite extends GroupComponent {
 	public ArrayList<GroupComponent> searchGroup(String name) {
 		// TODO Auto-generated method stub
 		ArrayList<GroupComponent> result = new ArrayList<GroupComponent>();
-
-		if (this.getName().contains(name)) {
+		String[] parts = name.toUpperCase().split(" ");
+		boolean match = true;
+		
+		for (String s : parts) {
+			if (!this.getName().toUpperCase().contains(s)) {
+				match = false;
+			}
+		}
+		if (match) {
 			result.add(this);
 		}
 		
-		for (GroupComponent c : children) {
-			if (!c.searchGroup(name).isEmpty()) {
-				result.add(c);
+		for (GroupComponent c : children) { //alt gruplar araniyor
+			for (GroupComponent g : c.searchGroup(name)) {
+				result.add(g);
 			}
 		}
 		
@@ -87,6 +104,29 @@ public class GroupComposite extends GroupComponent {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void listUserGroups(int userId) {
+		// TODO Auto-generated method stub
+		
+		for (int i : groupMembersIds) {
+			if (i == userId) {
+				System.out.println(name);
+				break;
+			}
+		}
+		
+		for (GroupComponent c : children) { //alt gruplar var ise onlarda da arama yapiliyor
+			c.listUserGroups(userId);
+		}
+		
+	}
+
+	@Override
+	public GroupComposite convertToComposite() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 
 }

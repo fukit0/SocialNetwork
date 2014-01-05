@@ -10,9 +10,9 @@ public class MainMenu implements Menu {
 	{
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		
-		System.out.println("1.Sign up"+"\n" +
-						   "2.Sign in"+"\n" +
-						   "3.Exit");	
+		System.out.println("\n1. Sign up"+"\n" +
+						   "2. Sign in"+"\n" +
+						   "3. Exit");	
 		
 		int input;
 		try {
