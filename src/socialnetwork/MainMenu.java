@@ -20,6 +20,11 @@ public class MainMenu implements Menu {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			input = -999;
+			System.out.println("Invalid input!");
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			input = -999;
+			System.out.println("Invalid input!");
 		}
 		
 		return input;

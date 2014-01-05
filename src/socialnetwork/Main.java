@@ -15,14 +15,16 @@ public class Main {
 			
 			int id=-1;
 			switch(choice){
-				case 1: do{					    	
-							id=sc.signUp();
-						}while(id==-1);
-						break;
-				case 2:	do{				
-							id=sc.signIn();
-						}while(id==-1);
-						break;
+				case 1:
+					do{					    	
+						id=sc.signUp();
+					}while(id==-1);
+					break;
+				case 2:
+					do{				
+						id=sc.signIn();
+					}while(id==-1);
+					break;
 				case 3: 
 					System.exit(0);
 					break;
@@ -37,14 +39,13 @@ public class Main {
 					if(choice2==1)
 						sc.searchFriend();
 					if(choice2==2)
-						sc.share();
+						sc.share(null); //kullanicinin duvarinda paylasilacagi icin null gonderiliyor
 					if(choice2==3)
 						sc.interests();
 					if(choice2==4)
 						sc.groups();
 					if(choice2==5)
 						sc.viewProfile();
-					
 					
 				}while(choice2!=6);
 				

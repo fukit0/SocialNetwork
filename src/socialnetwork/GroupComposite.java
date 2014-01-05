@@ -76,9 +76,14 @@ public class GroupComposite extends GroupComponent {
 		String[] parts = name.toUpperCase().split(" ");
 		boolean match = true;
 		
-		for (String s : parts) {
-			if (!this.getName().toUpperCase().contains(s)) {
-				match = false;
+		if (id == -1) //gruplari tutan root arama sonuclarindan cikartiliyor
+			match = false;
+		
+		if (match) {
+			for (String s : parts) {
+				if (!this.getName().toUpperCase().contains(s)) {
+					match = false;
+				}
 			}
 		}
 		if (match) {

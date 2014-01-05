@@ -12,7 +12,7 @@ public class UserMenu implements Menu{
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		
 		System.out.println("\n1. Search");
-//		System.out.println("2.Add friend");
+        //System.out.println("2.Add friend");
 		System.out.println("2. Share sth. on your wall");
 		System.out.println("3. My Interests");
 		System.out.println("4. My Groups");
@@ -26,6 +26,11 @@ public class UserMenu implements Menu{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			input = -999;
+			System.out.println("Invalid input!");
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			input = -999;
+			System.out.println("Invalid input!");
 		}
 		
 		return input;

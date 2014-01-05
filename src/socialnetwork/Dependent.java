@@ -12,22 +12,20 @@ public class Dependent{
 			this.id=id;
 			
 			switch(dependency){
-			case 'f': 
-				this.dependency=" - father"; break;
-			case 'm': 
-				this.dependency=" - mother"; break;
-			case 's': 
-				this.dependency=" - son"; break;
-			case 'd': 
-				this.dependency=" - daughter"; break;
-			case 'b': 
-				this.dependency=" - sister/brother"; break;
-			case 'a': 
-				this.dependency=" - aunt"; break;
-			case 'u': 
-				this.dependency=" - uncle"; break;
-			
-			
+				case 'f': 
+					this.dependency=" - father"; break;
+				case 'm': 
+					this.dependency=" - mother"; break;
+				case 's': 
+					this.dependency=" - son"; break;
+				case 'd': 
+					this.dependency=" - daughter"; break;
+				case 'b': 
+					this.dependency=" - sister/brother"; break;
+				case 'a': 
+					this.dependency=" - aunt"; break;
+				case 'u': 
+					this.dependency=" - uncle"; break;			
 			}
 		}
 		
@@ -47,8 +45,5 @@ public class Dependent{
 	public void setDependency(String dependency) {
 		this.dependency = dependency;
 	}
-
-	
-	
 
 }

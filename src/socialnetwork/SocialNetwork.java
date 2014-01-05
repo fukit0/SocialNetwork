@@ -24,7 +24,7 @@ public class SocialNetwork {
 		userId = 0;
 		groupId = 0;
 		users = new ArrayList<User>();
-		groupRoot = new GroupComposite(0, -999, "Groups");
+		groupRoot = new GroupComposite(-1, -999, "Groups Root");
 		activeUserId=-999;
 	}
 
@@ -188,7 +188,7 @@ public int signUp()
 		//daha sonra tüm sosyal ağ aranıyor
 		for (User u : users) {
 			boolean match = true;
-			if (!activeUser.isFriend(u.getUserId()) && u.isVisible()) {
+			if (!activeUser.isFriend(u.getUserId()) && u.isVisible()) { //arkadasi ise tekrar listelenmiyor
 				for (String s : parts) {
 					if (!u.getName().toUpperCase().contains(s)) {
 						match = false;
@@ -207,7 +207,7 @@ public int signUp()
 			for (User u : searchResult) {
 				dep="";
 
-				// arkadaşı olanlar belirtilsin, ortak ilgiler ve gruplar yazsın
+				//arkadaşı olanlar belirtilsin, ortak ilgiler ve gruplar yazsın
 				ArrayList<String> commonInterests = new ArrayList<String>();
 
 				for(String sAct : findUserById(activeUserId).getInterests())
@@ -218,7 +218,7 @@ public int signUp()
 						for (String interest : interests) {
 							if (s.toUpperCase().contains(interest)){
 								commonInterests.add(interest);}
-						}// ortak gruplar ve arkadaşlar
+						} //ortak gruplar ve arkadaşlar
 					}
 				}
 				for(Dependent d : activeUser.getDependents())
@@ -241,7 +241,7 @@ public int signUp()
 				choice = Integer.parseInt(bufferRead.readLine());
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Invalid input!");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				System.out.println("Invalid input!");
@@ -264,10 +264,10 @@ public int signUp()
 						 c = Integer.parseInt(bufferRead.readLine());
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Invalid input!");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Invalid input!");
 					}
 					if(c==1)
 					{
@@ -329,7 +329,7 @@ public int signUp()
 
 	}
 
-	public void share(){
+	public void share(Wall wall){
 		//file name error
 
 		int choseType=0;
@@ -351,10 +351,17 @@ public int signUp()
 			
 			String typeOfFile = "";
 			switch (choseType){
-			case 1: typeOfFile="text";break;
-			case 2: typeOfFile="link";break;
-			case 3: typeOfFile="media";break;
-
+				case 1: 
+					typeOfFile="text";
+					break;
+					
+				case 2: 
+					typeOfFile="link";
+					break;
+				
+				case 3: 
+					typeOfFile="media";
+					break;
 			}
 			
 			if(choseType!=4)
@@ -370,9 +377,13 @@ public int signUp()
 
 				SharableFactory factory = new SharableFactory();
 
-				Command c = new ShareCommand(findUserById(activeUserId).getWall(), factory.createShaObj(fileName, typeOfFile));
-				c.run();
-
+				if (wall == null) { //kullanicinin duvarinda paylasiliyorsa
+					Command c = new ShareCommand(findUserById(activeUserId).getWall(), factory.createShaObj(fileName, typeOfFile));
+					c.run();
+				} else { //grubun duvarinda paylasiliyorsa
+					Command c = new ShareCommand(wall, factory.createShaObj(findUserById(activeUserId).getName() + " - " + fileName, typeOfFile));
+					c.run();
+				}
 			}
 
 		}while(choseType!=4);
@@ -397,6 +408,7 @@ public int signUp()
 			System.out.println(index+". "+i);
 			index++;
 		}
+		
 		int choice = 0;
 		do{
 			System.out.println("\n1.Add new interests\n"+					
@@ -415,6 +427,7 @@ public int signUp()
 			}
 
 			switch(choice){
+				
 				case 1:
 					System.out.println("\nType your new interest");
 					String interest="";
@@ -514,30 +527,39 @@ public int signUp()
 						int input = 0;
 						try {
 							input = Integer.parseInt(bufferRead.readLine());
+						} catch (NumberFormatException e) {
+							// TODO Auto-generated catch block
+							System.out.println("Invalid input!");
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							System.out.println("Invalid input!");
 						}
 		
 						GroupComponent selectedGroup = result.get(input-1);
+						
+						System.out.println("Group's wall\n"+
+										   "------------------------------\n"+
+										   selectedGroup.getWall().toString());
 		
 						boolean admin = false;
 						boolean alreadyJoined = false;
 						if (selectedGroup.getAdminId() == activeUserId) { //aktif kullanici grubun kurucusu ise
 							admin = true;
-							System.out.println("\n1.Delete the group\n"+
-											   "2.Add subgroup\n"+
-											   "3.Back");
+							System.out.println("\n1. Delete the group\n"+
+											   "2. Add subgroup\n"+		   
+											   "3. Share sth. on group's wall\n"+
+							   		   		   "4. Back");
 						} else {
 							if (selectedGroup.searchMember(activeUserId)) { //aktif kullanici bu gruba daha onceden katilmis ise
 								alreadyJoined = true;
-								System.out.println("\n1.Leave from group\n"+
-												   "2.Add subgroup\n"+
-										   		   "3.Back");
+								System.out.println("\n1. Leave from group\n"+
+												   "2. Add subgroup\n"+		   
+												   "3. Share sth. on group's wall\n"+
+												   "4. Back");
 							} else {
-								System.out.println("\n1.Join the group\n"+
-												   "2.Add subgroup\n"+
-								   		   		   "3.Back");
+								System.out.println("\n1. Join the group\n"+
+												   "2. Add subgroup\n"+
+								   		   		   "3. Back");
 							}
 						}
 						
@@ -583,7 +605,12 @@ public int signUp()
 								
 								//yeni grup alt grubuyla beraber sosyal aga ekleniyor
 								addGroup(cloned);
+								break;
 								
+							case 3:
+								if (admin || alreadyJoined) { //grubun admini veya gruba katilmissa duvarda paylasim yapabilir
+									share(selectedGroup.getWall()); //grubun duvari metoda gonderiliyor
+								}
 								break;
 
 							default:

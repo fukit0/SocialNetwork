@@ -31,14 +31,6 @@ public class TestSocialNetwork {
 		furkan.addFriend(taner);
 		taner.addFriend(furkan);
 		
-		furkan.addDependent(new Dependent(103,'b'));
-		furkan.addInterest("tennis");
-		furkan.addInterest("snowboard");
-		furkan.addInterest("fifa");
-			
-		onur.addFriend(furkan);
-		furkan.addFriend(onur);
-		
 		onur.addFriend(omer);
 		omer.addFriend(onur);
 			
@@ -48,6 +40,11 @@ public class TestSocialNetwork {
 		omer.addFriend(taner);
 		taner.addFriend(omer);
 		
+		furkan.addDependent(new Dependent(103,'b'));
+		furkan.addInterest("tennis");
+		furkan.addInterest("snowboard");
+		furkan.addInterest("fifa");
+				
 		omer.addInterest("fifa");
 		
 		ahmet.addInterest("fifa");
@@ -71,6 +68,9 @@ public class TestSocialNetwork {
 		c.run();
 		
 		c = new ShareCommand(onur.getWall(), factory.createShaObj("kerem kusmezer: bit.ly/3487df", "link"));
+		c.run();
+		
+		c = new ShareCommand(girisimciler.getWall(), factory.createShaObj(onur.getName() + " - etkinlik: 07.01.2014 Ege Üniversitesi", "text"));
 		c.run();
 
 	}

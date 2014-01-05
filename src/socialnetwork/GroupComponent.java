@@ -7,11 +7,13 @@ public abstract class GroupComponent {
 	protected int id;
 	protected int adminId;
 	protected String name;
+	private Wall wall;
 	
 	public GroupComponent(int id, int adminId, String name) {
 		this.setId(id);
 		this.setAdminId(adminId);
 		this.setName(name);
+		wall = new Wall();
 	}
 	
 	public abstract void addGroup(GroupComponent c);
@@ -47,6 +49,14 @@ public abstract class GroupComponent {
 
 	public void setAdminId(int adminId) {
 		this.adminId = adminId;
+	}
+
+	public Wall getWall() {
+		return wall;
+	}
+
+	public void setWall(Wall wall) {
+		this.wall = wall;
 	}
 
 }
