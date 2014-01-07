@@ -1,9 +1,12 @@
 package socialnetwork;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SocialNetwork {
 
@@ -69,8 +72,9 @@ public int signUp()
 		userId++;
 
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+		Console console = System.console();
 		User u = new User();
-		String input="";
+		String input = "";
 
 		u.setUserId(userId);
 		try{
@@ -84,11 +88,16 @@ public int signUp()
 			{				
 				u.setEmail(input);
 			}else{
-				throw new IOException("Please enter valid email!");
+				throw new IOException("Please enter valid e-mail!");
 			}
 	
 			System.out.print("Password: ");
-			input=bufferRead.readLine();
+			
+			if (console == null) {
+				input = bufferRead.readLine();
+			} else {
+				input = String.valueOf(console.readPassword());
+			}
 			
 			if(input.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})"))
 			{			
@@ -112,48 +121,58 @@ public int signUp()
 	public int signIn(){
 		
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		String email="";
-		String pass="";
+		Console console = System.console();
+		String email = "";
+		String pass = "";
 
 		try{
 			System.out.print("\nE-mail: ");
-			email=bufferRead.readLine();
+			email = bufferRead.readLine();
 			
-			System.out.print("Password ");
-			pass=bufferRead.readLine();
+			try {
+				if (email.charAt(0) == '1' && email.length() == 1) { //1 girildiyse geri donuluyor
+					return -2;
+				}
+			} catch (IndexOutOfBoundsException e) {
+				// TODO Auto-generated catch block
+				return -2;
+			}
+			
+			System.out.print("Password: ");
+			
+			if (console == null) {
+				pass = bufferRead.readLine();
+			} else {
+				pass = String.valueOf(console.readPassword());
+			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Invalid input!");
 		}
 
-		/*Iterator<User> i = users.iterator();
-		while(i.hasNext())
+		Iterator<User> i = users.iterator();
+		User current;
+		while (i.hasNext())
 		{
+			current = (User) i.next();
 			try {
-				if (i.next().getEmail().equals(email) && i.next().getPass().equals(pass)) {
-					activeUserId = i.next().getUserId();
-					return i.next().getUserId();
+				if (current.getEmail().equals(email) && current.getPass().equals(pass)) {
+					activeUserId = current.getUserId();
+					return current.getUserId();
 				}
 			} catch (NoSuchElementException e) {
 				// TODO: handle exception
 				return -1;
 			}
-		}*/
-
-		for (User u : users) {
-			if (u.getEmail().equals(email) && u.getPass().equals(pass)) {
-				activeUserId = u.getUserId();
-				return u.getUserId();
-			}
 		}
 
 		return -1;
-	}	
-
+	}
+	
 	public void searchFriend() {
 
-		ArrayList<User> searchResult = new ArrayList<>();
+		ArrayList<User> searchResult = new ArrayList<User>();
 
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
@@ -170,7 +189,7 @@ public int signUp()
 
 		String[] parts = name.toUpperCase().split(" ");
 
-		//önce arkadaşlar arasında aranıyor
+		/*//önce arkadaşlar arasında aranıyor
 		for (User u : activeUser.getFriends()) {
 			boolean match = true;
 			if (u.isVisible()) {
@@ -183,19 +202,23 @@ public int signUp()
 					searchResult.add(u);
 				}
 			}
-		}
+		}*/
 
 		//daha sonra tüm sosyal ağ aranıyor
 		for (User u : users) {
 			boolean match = true;
-			if (!activeUser.isFriend(u.getUserId()) && u.isVisible()) { //arkadasi ise tekrar listelenmiyor
+			if (u.isVisible()) {
 				for (String s : parts) {
 					if (!u.getName().toUpperCase().contains(s)) {
 						match = false;
 					}
 				}
 				if (match) {
-					searchResult.add(u);
+					if (activeUser.isFriend(u.getUserId())) { //arkadasi ise listenin en basina ekleniyor
+						searchResult.add(0, u);
+					} else {			
+						searchResult.add(u);
+					}
 				}
 			}
 		}
@@ -209,6 +232,7 @@ public int signUp()
 
 				//arkadaşı olanlar belirtilsin, ortak ilgiler ve gruplar yazsın
 				ArrayList<String> commonInterests = new ArrayList<String>();
+				ArrayList<GroupComponent> commonGroups = new ArrayList<GroupComponent>();
 
 				for(String sAct : findUserById(activeUserId).getInterests())
 				{
@@ -221,6 +245,13 @@ public int signUp()
 						} //ortak gruplar ve arkadaşlar
 					}
 				}
+				
+				for (GroupComponent g : groupRoot.getUserGroups(activeUserId)) {
+					if (g.searchMember(u.getUserId())) {
+						commonGroups.add(g);
+					}
+				}
+				
 				for(Dependent d : activeUser.getDependents())
 				{
 					if(d.getId()==u.getUserId()) {
@@ -229,7 +260,13 @@ public int signUp()
 					}
 				}
 
-				System.out.println(i + ". " + u.getName() + dep +" - " + commonInterests.toString());
+				if (activeUser.isFriend(u.getUserId())) {
+					System.out.println(i + ". " + u.getName() + " \u2714" + dep + " - " + commonInterests.toString() + " - " + commonGroups.toString());
+				} else {
+					System.out.println(i + ". " + u.getName() + dep + " - " + commonInterests.toString() + " - " + commonGroups.toString());
+				}
+				
+				
 				i++;
 			}
 
@@ -256,8 +293,8 @@ public int signUp()
 				if(activeUser.isFriend(otherId))
 				{
 					System.out.println(otherUser.toString()+"\n\n\n\n");
-					System.out.println("\n1.Unfriend \n"+
-									   "2.Back");
+					System.out.println("\n1. Unfriend \n"+
+									   "2. Back");
 								//"3.Send a Message");
 					int c=0;
 					try {
@@ -335,16 +372,19 @@ public int signUp()
 		int choseType=0;
 		do{
 			System.out.println("\nWhich type of file do you like to post on your wall?\n"
-							  +"1.Text\n"
-							  +"2.Link\n"
-							  +"3.Media\n"
-							  +"4.Back");
+							  +"1. Text\n"
+							  +"2. Link\n"
+							  +"3. Media\n"
+							  +"4. Back");
 
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
 			try {
 				choseType = Integer.parseInt(bufferRead.readLine());
-			} catch (NumberFormatException | IOException e) {
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Invalid input!");
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				System.out.println("Invalid input!");
 			}
@@ -411,9 +451,9 @@ public int signUp()
 		
 		int choice = 0;
 		do{
-			System.out.println("\n1.Add new interests\n"+					
-							   "2.Delete old one\n"+
-					           "3.Back");
+			System.out.println("\n1. Add new interests\n"+					
+							   "2. Delete old one\n"+
+					           "3. Back");
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
 			try {
@@ -466,13 +506,13 @@ public int signUp()
 	public void groups() {
 		
 		System.out.println("\nGroups that I joined:");
-		groupRoot.listUserGroups(activeUserId); //kullanicinin katildigi gruplar listeleniyor
+		System.out.println(groupRoot.getUserGroups(activeUserId).toString()); //kullanicinin katildigi gruplar listeleniyor
 		
 		int choice = 0;
 		do{
-			System.out.println("\n1.Create new group\n"+					
-							   "2.Search groups\n"+
-							   "3.Back");
+			System.out.println("\n1. Create new group\n"+					
+							   "2. Search groups\n"+
+							   "3. Back");
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 
 			try {
@@ -647,7 +687,36 @@ public int signUp()
 
 	public void viewProfile() {
 		// TODO Auto-generated method stub
-		System.out.println(findUserById(activeUserId).toString());
+		User activeUser = findUserById(activeUserId);
+		
+		System.out.println(activeUser.toString());
+		
+		if (activeUser.isVisible()) {
+			System.out.println("\nYou are visible to other users. To change this setting press 1. Press 2 to go back.");
+		} else {
+			System.out.println("\nYou are not visible to other users. To change this setting press 1. Press 2 to go back.");
+		}
+		
+		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+		int input = 0;
+		
+		try {
+			input = Integer.parseInt(bufferRead.readLine());
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Invalid input!");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Invalid input!");
+		}
+		
+		if (input == 1) {
+			if(activeUser.isVisible()) {
+				activeUser.setVisible(false);
+			} else {
+				activeUser.setVisible(true);
+			}
+		}
 	}
 
 }

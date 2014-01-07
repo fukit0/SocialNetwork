@@ -11,7 +11,7 @@ public class TestSocialNetwork {
 		User yasin = new User(103, "yasin bozbay","yasin@ege.edu","zxC789");
 		User omer = new User(104, "ömer faruk alaca","omer@ege.edu","rtY123");
 		User ahmet = new User(105, "amat cahat","amat@ege.edu","fgH456");
-		User taner = new User(106, "taner aydogan","tanerer@ege.edu","vbn789");
+		User taner = new User(106, "taner aydogan","tanerer@ege.edu","vbN789");
 		
 		GroupComponent tenisSeverler = new GroupLeaf(101, 101, "tenis severler");
 		tenisSeverler.addMember(106);

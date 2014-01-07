@@ -112,19 +112,25 @@ public class GroupComposite extends GroupComponent {
 	}
 
 	@Override
-	public void listUserGroups(int userId) {
+	public ArrayList<GroupComponent> getUserGroups(int userId) {
 		// TODO Auto-generated method stub
+		ArrayList<GroupComponent> result = new ArrayList<GroupComponent>();
 		
 		for (int i : groupMembersIds) {
 			if (i == userId) {
-				System.out.println(name);
+				//System.out.println(name);
+				result.add(this);
 				break;
 			}
 		}
 		
 		for (GroupComponent c : children) { //alt gruplar var ise onlarda da arama yapiliyor
-			c.listUserGroups(userId);
+			for (GroupComponent g : c.getUserGroups(userId)) {
+				result.add(g);
+			}
 		}
+		
+		return result;
 		
 	}
 
@@ -132,6 +138,12 @@ public class GroupComposite extends GroupComponent {
 	public GroupComposite convertToComposite() {
 		// TODO Auto-generated method stub
 		return this;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return name;
 	}
 
 }

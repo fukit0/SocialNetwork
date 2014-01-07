@@ -21,7 +21,7 @@ public abstract class GroupComponent {
 	public abstract ArrayList<GroupComponent> searchGroup(String name);
 	public abstract void displayGroup();
 	public abstract void displayGroupMembers();
-	public abstract void listUserGroups(int userId);
+	public abstract ArrayList<GroupComponent> getUserGroups(int userId);
 	public abstract boolean searchMember(int userId);
 	public abstract void addMember(int userId);
 	public abstract void removeMember(int userId);

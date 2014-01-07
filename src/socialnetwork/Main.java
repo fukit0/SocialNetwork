@@ -1,5 +1,6 @@
 package socialnetwork;
 
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -11,26 +12,29 @@ public class Main {
 		
 		int choice;
 		do{
-		 choice	= new MainMenu().show();
+			choice = new MainMenu().show();
 			
-			int id=-1;
+			int id = -1;
 			switch(choice){
 				case 1:
 					do{					    	
-						id=sc.signUp();
-					}while(id==-1);
+						id = sc.signUp();
+					}while(id == -1);
 					break;
 				case 2:
 					do{				
-						id=sc.signIn();
-					}while(id==-1);
+						id = sc.signIn();
+						if (id == -1) {
+							System.out.println("\nWrong e-mail or password! Press 1 to go back.");			
+						}
+					}while(id == -1);
 					break;
 				case 3: 
 					System.exit(0);
 					break;
 			}
 			
-			if(id!=-1)
+			if(id != -1 && id != -2)
 			{
 				int choice2;
 				do
@@ -48,8 +52,8 @@ public class Main {
 						sc.viewProfile();
 					
 				}while(choice2!=6);
-				
 			}
+			
 		}while(choice!=3);	
 	}
 

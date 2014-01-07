@@ -86,15 +86,19 @@ public class GroupLeaf extends GroupComponent {
 	}
 
 	@Override
-	public void listUserGroups(int userId) {
+	public ArrayList<GroupComponent> getUserGroups(int userId) {
 		// TODO Auto-generated method stub
+		ArrayList<GroupComponent> result = new ArrayList<GroupComponent>();
 		
 		for (int i : groupMembersIds) {
 			if (i == userId) {
-				System.out.println(name);
+				//System.out.println(name);
+				result.add(this);
 				break;
 			}
 		}
+		
+		return result;
 		
 	}
 	
@@ -104,6 +108,12 @@ public class GroupLeaf extends GroupComponent {
 		composite.setGroupMembersIds(groupMembersIds);
 		
 		return composite;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return name;
 	}
 
 }

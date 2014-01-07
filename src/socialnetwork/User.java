@@ -9,7 +9,6 @@ public class User {
 	private String name;
 	private String email;
 	private String pass;
-	
 	private ArrayList<User> friends;
 	private ArrayList<Dependent> dependents;
 	//private ArrayList<User> dependents;
