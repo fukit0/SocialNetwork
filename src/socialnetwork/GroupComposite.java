@@ -140,6 +140,13 @@ public class GroupComposite extends GroupComponent {
 		return this;
 	}
 	
+	public boolean hasChild() {
+		if (children.isEmpty())
+			return false;
+		else
+			return true;
+	}
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

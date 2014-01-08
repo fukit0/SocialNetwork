@@ -6,7 +6,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		SocialNetwork sc = SocialNetwork.getSocialNetwork("foi");
+		SocialNetwork sc = SocialNetwork.getSocialNetwork("F.O.I.net");
 
 		new TestSocialNetwork().populateNetwork();
 		

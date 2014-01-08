@@ -312,6 +312,7 @@ public int signUp()
 						{
 							activeUser.deleteDependent(otherId);
 							activeUser.deleteFriend(otherUser);
+							otherUser.deleteFriend(activeUser);
 						}
 						activeUser.deleteFriend(otherUser);
 					}
@@ -337,15 +338,20 @@ public int signUp()
 								{
 									System.out.println("as a father press 'f'\n" +
 											"as a mother press 'm'\n" +
-											"as a son press 's'\n" +
-											"as a daughter press 'd'\n" +
+											"as a child press 'c'\n" +
+											"as a nephew press 'n'\n" +
 											"as a sister/brother press 'b'\n" +
 											"as a aunt press 'a'\n" +
 											"as a uncle press 'u'\n" +
 											"as a wife press 'w'\n" +
 											"as a husband press 'h'\n");
-									Dependent d = new Dependent(otherId,bufferRead.readLine().charAt(0));
+									char c = bufferRead.readLine().charAt(0);
+								
+									
+									Dependent d = new Dependent(otherId,c);
 									activeUser.addDependent(d);
+									
+									
 								}
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
@@ -675,6 +681,12 @@ public int signUp()
 
 	public void removeGroup(GroupComponent c) {
 		groupRoot.removeGroup(c);
+		
+		if (c instanceof GroupComposite) {
+			if (((GroupComposite) c).hasChild()) {
+				
+			}
+		}
 	}
 
 	public void displayAllGroups() {
