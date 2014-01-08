@@ -6,18 +6,19 @@ public class TestSocialNetwork {
 		
 		SocialNetwork sc = SocialNetwork.getSocialNetwork("foi"); //singleton test
 		
-		User furkan = new User(101, "furkan tanriverdi","furkan@ege.edu","qwE123");
-		User onur = new User(102, "onur cem senel","onur@ege.edu","asD456");
-		User yasin = new User(103, "yasin bozbay","yasin@ege.edu","zxC789");
-		User omer = new User(104, "ömer faruk alaca","omer@ege.edu","rtY123");
-		User ahmet = new User(105, "amat cahat","amat@ege.edu","fgH456");
-		User taner = new User(106, "taner aydogan","tanerer@ege.edu","vbN789");
+		User furkan = new User(101, "Furkan Tanriverdi", "furkan@ege.edu", "qwE123");
+		User onur = new User(102, "Onur Cem Senel", "onur@ege.edu", "asD456");
+		User yasin = new User(103, "Yasin Bozbay", "yasin@ege.edu", "zxC789");
+		User omer = new User(104, "Omer Faruk Alaca", "omer@ege.edu", "rtY123");
+		User ahmet = new User(105, "Ahmet Cahit Yasa", "ahmet@ege.edu", "fgH456");
+		User taner = new User(106, "Taner Aydogan", "taner@ege.edu", "vbN789");
 		
-		GroupComponent tenisSeverler = new GroupLeaf(101, 101, "tenis severler");
+		GroupComponent tenisSeverler = new GroupLeaf(101, 101, "Tenis Severler");
 		tenisSeverler.addMember(106);
 		sc.addGroup(tenisSeverler);
 		
-		GroupComponent girisimciler = new GroupLeaf(102, 104, "giriþimciler");
+		GroupComponent girisimciler = new GroupComposite(102, 104, "Girisimciler");
+		girisimciler.addGroup(new GroupLeaf(103, 102, "Girisimciler -> Ege Universitesi Girisimcilik Toplulugu"));
 		girisimciler.addMember(102);
 		girisimciler.addMember(103);
 		sc.addGroup(girisimciler);
@@ -41,16 +42,16 @@ public class TestSocialNetwork {
 		taner.addFriend(omer);
 		
 		furkan.addDependent(new Dependent(103,'b'));
-		furkan.addInterest("tennis");
-		furkan.addInterest("snowboard");
-		furkan.addInterest("fifa");
+		furkan.addInterest("Tennis");
+		furkan.addInterest("Snowboard");
+		furkan.addInterest("Fifa");
 				
-		omer.addInterest("fifa");
+		omer.addInterest("Fifa");
 		
-		ahmet.addInterest("fifa");
+		ahmet.addInterest("Fifa");
 		
-		taner.addInterest("tennis");
-		taner.addInterest("fifa");
+		taner.addInterest("Tennis");
+		taner.addInterest("Fifa");
 		
 		sc.getUsers().add(furkan);
 		sc.getUsers().add(onur);
@@ -61,16 +62,16 @@ public class TestSocialNetwork {
 		
 		SharableFactory factory = new SharableFactory();
 		
-		Command c = new ShareCommand(furkan.getWall(), factory.createShaObj("today is zaman", "text"));
+		Command c = new ShareCommand(furkan.getWall(), factory.createShaObj("Today is Zaman", "text"));
 		c.run();
 		
-		c = new ShareCommand(yasin.getWall(), factory.createShaObj("magic break \n iletisim", "text"));
+		c = new ShareCommand(yasin.getWall(), factory.createShaObj("Magic Break \n Iletisim: 0123 456 78 90", "text"));
 		c.run();
 		
-		c = new ShareCommand(onur.getWall(), factory.createShaObj("kerem kusmezer: bit.ly/3487df", "link"));
+		c = new ShareCommand(onur.getWall(), factory.createShaObj("OOP ders notlari: bit.ly/3487df", "link"));
 		c.run();
 		
-		c = new ShareCommand(girisimciler.getWall(), factory.createShaObj(onur.getName() + " - etkinlik: 07.01.2014 Ege Üniversitesi", "text"));
+		c = new ShareCommand(girisimciler.getWall(), factory.createShaObj(onur.getName() + " - Seminer: 07.01.2014 Ege Universitesi", "text"));
 		c.run();
 
 	}

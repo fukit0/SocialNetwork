@@ -18,6 +18,7 @@ public abstract class GroupComponent {
 	
 	public abstract void addGroup(GroupComponent c);
 	public abstract void removeGroup(GroupComponent c);
+	public abstract void removeSubGroups();
 	public abstract ArrayList<GroupComponent> searchGroup(String name);
 	public abstract void displayGroup();
 	public abstract void displayGroupMembers();

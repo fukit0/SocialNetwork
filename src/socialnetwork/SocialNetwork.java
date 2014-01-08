@@ -261,7 +261,7 @@ public int signUp()
 				}
 
 				if (activeUser.isFriend(u.getUserId())) {
-					System.out.println(i + ". " + u.getName() + " \u2714" + dep + " - " + commonInterests.toString() + " - " + commonGroups.toString());
+					System.out.println(i + ". " + u.getName() + " +" + dep + " - " + commonInterests.toString() + " - " + commonGroups.toString());
 				} else {
 					System.out.println(i + ". " + u.getName() + dep + " - " + commonInterests.toString() + " - " + commonGroups.toString());
 				}
@@ -295,7 +295,7 @@ public int signUp()
 					System.out.println(otherUser.toString()+"\n\n\n\n");
 					System.out.println("\n1. Unfriend \n"+
 									   "2. Back");
-								//"3.Send a Message");
+								//"3. Send a Message");
 					int c=0;
 					try {
 						 c = Integer.parseInt(bufferRead.readLine());
@@ -323,16 +323,15 @@ public int signUp()
 				else
 				{
 					System.out.println("\n" + otherUser.getName()
-							+ " is not your friend.Do you want to add as a friend him/her?(yes/no) :");
+							+ " is not your friend. Do you want to add as a friend him/her? (yes/no):");
 					try {
 
 						if(bufferRead.readLine().equals("yes"))
 						{
 							activeUser.addFriend(otherUser);
-							//gecici cozum!!!
 							otherUser.addFriend(activeUser);
 
-							System.out.println("\nDo you want to add this person as a dependent?(yes/no) ["+searchResult.get(choice-1).getName()+"]");
+							System.out.println("\nDo you want to add this person as a dependent? (yes/no) ["+searchResult.get(choice-1).getName()+"]");
 							try {
 								if(bufferRead.readLine().equals("yes"))
 								{
@@ -345,13 +344,11 @@ public int signUp()
 											"as a uncle press 'u'\n" +
 											"as a wife press 'w'\n" +
 											"as a husband press 'h'\n");
+									
 									char c = bufferRead.readLine().charAt(0);
-								
 									
 									Dependent d = new Dependent(otherId,c);
 									activeUser.addDependent(d);
-									
-									
 								}
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
@@ -475,7 +472,7 @@ public int signUp()
 			switch(choice){
 				
 				case 1:
-					System.out.println("\nType your new interest");
+					System.out.println("\nType your new interest:");
 					String interest="";
 					try {
 						interest = bufferRead.readLine();
@@ -533,7 +530,7 @@ public int signUp()
 
 			switch(choice){
 				case 1: //yeni grup ekleme
-					System.out.println("\nType your group name");
+					System.out.println("\nType your group name:");
 					String name="";
 					try {
 						name = bufferRead.readLine();
@@ -622,7 +619,8 @@ public int signUp()
 						switch (input) { //secilen grupla hangi islemin yapilacagi belirleniyor
 							case 1: //grubu silme, gruba katilma, gruptan cikma
 								if (admin) {
-									removeGroup(selectedGroup);							
+									removeGroup(selectedGroup);
+									selectedGroup.removeSubGroups();
 								} else if (alreadyJoined) {
 									selectedGroup.removeMember(activeUserId);
 								} else {
@@ -681,12 +679,6 @@ public int signUp()
 
 	public void removeGroup(GroupComponent c) {
 		groupRoot.removeGroup(c);
-		
-		if (c instanceof GroupComposite) {
-			if (((GroupComposite) c).hasChild()) {
-				
-			}
-		}
 	}
 
 	public void displayAllGroups() {

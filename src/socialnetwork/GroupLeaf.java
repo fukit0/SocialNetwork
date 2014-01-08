@@ -116,4 +116,10 @@ public class GroupLeaf extends GroupComponent {
 		return name;
 	}
 
+	@Override
+	public void removeSubGroups() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

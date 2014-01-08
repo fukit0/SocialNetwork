@@ -139,18 +139,17 @@ public class GroupComposite extends GroupComponent {
 		// TODO Auto-generated method stub
 		return this;
 	}
-	
-	public boolean hasChild() {
-		if (children.isEmpty())
-			return false;
-		else
-			return true;
-	}
-	
+		
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return name;
+	}
+
+	@Override
+	public void removeSubGroups() {
+		// TODO Auto-generated method stub
+		children.clear();
 	}
 
 }

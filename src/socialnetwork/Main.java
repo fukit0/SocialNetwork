@@ -6,6 +6,8 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		System.out.println("Welcome to F.O.I.net");
+		
 		SocialNetwork sc = SocialNetwork.getSocialNetwork("F.O.I.net");
 
 		new TestSocialNetwork().populateNetwork();
@@ -21,6 +23,7 @@ public class Main {
 						id = sc.signUp();
 					}while(id == -1);
 					break;
+				
 				case 2:
 					do{				
 						id = sc.signIn();
@@ -29,6 +32,7 @@ public class Main {
 						}
 					}while(id == -1);
 					break;
+				
 				case 3: 
 					System.exit(0);
 					break;
